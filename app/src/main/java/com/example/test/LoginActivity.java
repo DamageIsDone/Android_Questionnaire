@@ -28,44 +28,47 @@ public class LoginActivity extends AppCompatActivity {//启动页面
     private EditText passwordEditText;
     private CheckBox checkBox;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+    private View.OnClickListener listener1 = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            login();
+        }
+    };
 
-        loginButton = findViewById(R.id.loginButton);
-        phoneEditText = findViewById(R.id.phoneEditText);
-        passwordEditText = findViewById(R.id.passwordEditText);
-        checkBox = findViewById(R.id.checkBox);
+    private void SucceededLogin() {
+        if (checkBox.isChecked()) {
+            rememberme(); //如果选中，将把数据保存到xml文件
+            Log.d("flag","记住密码选中");
+        } else {
+            unrememberme(); //如果取消选中，则清除xml文件数据
+            Log.d("flag","记住密码取消选中");
+        }
+    }
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                login();
-            }
-        });
+    private void rememberme() {
+        String phone = phoneEditText.getText().toString();
+        String password = passwordEditText.getText().toString();
+        SharedPreferences sp = getSharedPreferences("mydata", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean("rememberme", true);
+        editor.putString("phone", phone);
+        editor.putString("password", password);
+        editor.apply();
+        Log.d("flag", "数据保存成功");
+    }
 
-        //点击注册账号，跳转至注册页面
-        //start
-        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) TextView enrollTextView = findViewById(R.id.enrollTextView);
-        enrollTextView.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                Intent intent = new Intent(LoginActivity.this, EnrollActivity.class);
-                startActivity(intent);
-            }
-        });
-        //end
-
-        readSP();
+    private void unrememberme() {
+        SharedPreferences sp = getSharedPreferences("mydata", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.clear();
+        editor.apply();
+        Log.d("flag", "数据已删除");
     }
 
     private void readSP() {
-        Log.d("flag","执行readSP()");
         SharedPreferences sp = getSharedPreferences("mydata", Context.MODE_PRIVATE);
         Boolean remember = sp.getBoolean("rememberme", false);
         if( remember ) {
-            Log.d("flag","检测到记住密码选中");
             checkBox.setChecked(true);
             String phone = sp.getString("phone", "");
             String password = sp.getString("password", "");
@@ -90,32 +93,37 @@ public class LoginActivity extends AppCompatActivity {//启动页面
         }
     }
 
-    private void SucceededLogin() {
-        if (checkBox.isChecked()) {
-            rememberme(); //如果选中，将把数据保存到xml文件
-            Log.d("flag","记住密码选中");
-        } else {
-            unrememberme(); //如果取消选中，则清除xml文件数据
-            Log.d("flag","记住密码取消选中");
-        }
-    }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
 
-    private void unrememberme() {
-        String phone = phoneEditText.getText().toString();
-        String password = passwordEditText.getText().toString();
-        SharedPreferences sp = getSharedPreferences("mydata", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putBoolean("rememberme", true);
-        editor.putString("phone", phone);
-        editor.putString("password", password);
-        editor.apply();
-    }
+        loginButton = findViewById(R.id.loginButton);
+        phoneEditText = findViewById(R.id.phoneEditText);
+        passwordEditText = findViewById(R.id.passwordEditText);
+        checkBox = findViewById(R.id.checkBox);
 
-    private void rememberme() {
-        SharedPreferences sp = getSharedPreferences("mydata", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.clear();
-        editor.apply();
+        readSP();
+
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                login();
+            }
+        });
+
+        //点击注册账号，跳转至注册页面
+        //start
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) TextView enrollTextView = findViewById(R.id.enrollTextView);
+        enrollTextView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(LoginActivity.this, EnrollActivity.class);
+                startActivity(intent);
+            }
+        });
+        //end
+
     }
 
 }
