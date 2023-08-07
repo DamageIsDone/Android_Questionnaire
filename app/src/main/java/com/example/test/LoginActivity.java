@@ -21,12 +21,16 @@ import com.example.test.dao.UserDao;
 import com.example.test.db.AppDatabase;
 import com.example.test.entity.User;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class LoginActivity extends AppCompatActivity {//启动页面
 
     private Button loginButton;
     private EditText phoneEditText;
     private EditText passwordEditText;
     private CheckBox checkBox;
+    private TextView enrollTextView;
 
     private View.OnClickListener listener1 = new View.OnClickListener() {
         @Override
@@ -90,6 +94,15 @@ public class LoginActivity extends AppCompatActivity {//启动页面
             SucceededLogin();
             Log.d("flag","成功登录");
             Toast.makeText(LoginActivity.this, "登录中...", Toast.LENGTH_SHORT).show();
+            //设置登陆成功2秒后再跳转页面
+            Timer timer=new Timer();
+            TimerTask timerTask=new TimerTask() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    finish();
+                }
+            };timer.schedule(timerTask,2000);
         }
     }
 
@@ -102,6 +115,7 @@ public class LoginActivity extends AppCompatActivity {//启动页面
         phoneEditText = findViewById(R.id.phoneEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
         checkBox = findViewById(R.id.checkBox);
+        enrollTextView = findViewById(R.id.enrollTextView);
 
         readSP();
 
@@ -114,7 +128,6 @@ public class LoginActivity extends AppCompatActivity {//启动页面
 
         //点击注册账号，跳转至注册页面
         //start
-        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) TextView enrollTextView = findViewById(R.id.enrollTextView);
         enrollTextView.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
