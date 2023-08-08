@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
                         Fragment selectedFragment = null;
 
                         switch (item.getItemId()) {
-                            case R.id.navigation1:
+                            case R.id.navigation_main:
                                 selectedFragment = new Fragment1();
                                 break;
                             case R.id.navigation2:
