@@ -6,8 +6,8 @@
         android:title="主页" />
     <item
         android:id="@+id/navigation2"
-        android:icon="@drawable/folder"
-        android:title="Fragment2" />
+        android:icon="@drawable/star"
+        android:title="收集" />
     <item
         android:id="@+id/navigation_profile"
         android:icon="@drawable/user"

@@ -1,11 +1,13 @@
 package com.example.test;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 import androidx.room.Update;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +18,7 @@ import com.example.test.db.AppDatabase;
 import com.example.test.entity.User;
 
 import java.util.List;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,6 +31,9 @@ public class EnrollActivity extends AppCompatActivity {
     private Button deleteButton;
     private AppDatabase appDatabase;
     private UserDao userDao;
+    private EditText codeEditText;
+    private Button codeButton;
+    private int randomNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +44,35 @@ public class EnrollActivity extends AppCompatActivity {
         phoneEditText = findViewById(R.id.phoneEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
         enrollButton = findViewById(R.id.enrollButton);
-        deleteButton =findViewById(R.id.deleteButton);
+        deleteButton = findViewById(R.id.deleteButton);
+        codeEditText = findViewById(R.id.codeEditText);
+        codeButton = findViewById(R.id.codeButton);
 
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 userDao.deleteAll();
+            }
+        });
+
+        codeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String inputPhone = phoneEditText.getText().toString();
+                boolean isElevenDigits = isElevenDigits(inputPhone);
+                //电话号码输入不为空时才可获得验证码
+                if(!isElevenDigits) {
+                    Toast.makeText(EnrollActivity.this, "请正确输入手机号", Toast.LENGTH_SHORT).show();
+                } else {
+                    randomNumber = generateRandomNumber(); // 生成随机数
+                    Log.d("flag","生成随机数"+randomNumber);
+                    // 创建AlertDialog
+                    AlertDialog alertDialog = new AlertDialog.Builder(EnrollActivity.this)
+                            .setTitle("验证码")
+                            .setMessage("您的验证码为：" + randomNumber)
+                            .setPositiveButton("确定", null) // 设置确定按钮的点击事件
+                            .show();
+                }
             }
         });
 
@@ -58,10 +87,12 @@ public class EnrollActivity extends AppCompatActivity {
                 String inputId = idEditText.getText().toString();
                 String inputPhone = phoneEditText.getText().toString();
                 String inputPassword = passwordEditText.getText().toString();
+                int inputCode = Integer.parseInt(codeEditText.getText().toString());
                 boolean isLetters = isLetters(inputId);
                 boolean isElevenDigits = isElevenDigits(inputPhone);
                 boolean isAlphaNumeric = isAlphaNumeric(inputPassword);
-                if (isLetters && isElevenDigits && isAlphaNumeric) {
+                boolean isCode = isCode (inputCode);
+                if (isCode && isLetters && isElevenDigits && isAlphaNumeric) {
                     User user = new User();
                     user.id = inputId;
                     user.phone = inputPhone;
@@ -73,6 +104,17 @@ public class EnrollActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    // 生成六位随机数的辅助方法
+    private int generateRandomNumber() {
+        int min = 100000;
+        int max = 999999;
+        return new Random().nextInt(max - min + 1) + min;
+    }
+
+    private boolean isCode(int input) {
+        return randomNumber==input;
     }
 
     private boolean isLetters(String input) {

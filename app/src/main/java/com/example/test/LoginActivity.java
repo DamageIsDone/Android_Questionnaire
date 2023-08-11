@@ -31,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {//启动页面
     private EditText passwordEditText;
     private CheckBox checkBox;
     private TextView enrollTextView;
+    private TextView forgetTextView;
 
     private View.OnClickListener listener1 = new View.OnClickListener() {
         @Override
@@ -116,6 +117,7 @@ public class LoginActivity extends AppCompatActivity {//启动页面
         passwordEditText = findViewById(R.id.passwordEditText);
         checkBox = findViewById(R.id.checkBox);
         enrollTextView = findViewById(R.id.enrollTextView);
+        forgetTextView =findViewById(R.id.forgetTextView);
 
         readSP();
 
@@ -137,6 +139,13 @@ public class LoginActivity extends AppCompatActivity {//启动页面
         });
         //end
 
+        forgetTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, ForgetActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 }
