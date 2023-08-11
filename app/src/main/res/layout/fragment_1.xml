@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:gravity="center_vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/newButton"
+        android:layout_width="300dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center"
+        android:backgroundTint="#C4A2FF"
+        android:textSize="30sp"
+        android:text="新建问卷" />
+
+    <Button
+        android:id="@+id/writeButton"
+        android:layout_width="300dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center"
+        android:backgroundTint="#A5D3A7"
+        android:layout_marginTop="30dp"
+        android:textSize="30sp"
+        android:text="填写问卷" />
+
+</LinearLayout>
