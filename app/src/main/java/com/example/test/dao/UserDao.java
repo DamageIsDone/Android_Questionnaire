@@ -16,6 +16,8 @@ public interface UserDao {
     List<User> getAll(); //查询所有
     @Query("SELECT * FROM user WHERE phone = :phone AND password = :password")
     User findUser( String phone, String password ); //条件查询
+    @Query("SELECT * FROM user WHERE phone = :phone")
+    User findUserByPhone( String phone ); //通过手机号查询
     @Insert
     void insert(User user); //新增，由于主键自增，user不用设置uid值
     @Delete
