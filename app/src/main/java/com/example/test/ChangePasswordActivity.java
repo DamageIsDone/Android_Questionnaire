@@ -17,6 +17,8 @@ import com.example.test.entity.User;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ChangePasswordActivity extends AppCompatActivity {
 
@@ -46,8 +48,9 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 UserDao userDao = db.userDao();
                 User user = userDao.findUserByPassword(inputOrigin);
                 boolean isPassword = inputOrigin.equals(user.password);
+                boolean isAlphaNumeric = isAlphaNumeric(inputNew);
                 Log.d("flag","isPassword为" + isPassword);
-                if (inputNew.equals(inputConfirm) && isPassword){
+                if (inputNew.equals(inputConfirm) && isPassword && isAlphaNumeric){
                     Log.d("flag","原始密码为：" + user.password);
                     if ( user != null ) {
                         Log.d("flag","修改成功");
@@ -64,13 +67,19 @@ public class ChangePasswordActivity extends AppCompatActivity {
                                 finish();
                             }
                         };timer.schedule(timerTask,1000);
-                    } else {
-                        Log.d("flag","if未执行");
                     }
                 } else {
-                    Toast.makeText(ChangePasswordActivity.this, "请确认密码", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ChangePasswordActivity.this, "请确认密码输入是否有误或是否符合要求", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
+
+    private boolean isAlphaNumeric(String input) {
+        String regex = "^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z\\d]{8,20}$"; // 使用正则表达式匹配8-20位字母加数字
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(input);
+
+        return matcher.matches();
     }
 }

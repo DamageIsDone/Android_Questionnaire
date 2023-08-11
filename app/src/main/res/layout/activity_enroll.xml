@@ -61,7 +61,7 @@
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginTop="10dp"
-        android:hint="请输入密码（8-20位字母数字）"
+        android:hint="请输入密码（8-20位字母数字组合）"
         android:singleLine="true"
         android:imeOptions="actionDone"
         android:layout_gravity="center" />
