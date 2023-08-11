@@ -22,20 +22,10 @@
         android:layout_gravity="center" />
 
     <EditText
-        android:id="@+id/idEditText"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="30dp"
-        android:layout_gravity="center"
-        android:singleLine="true"
-        android:imeOptions="actionDone"
-        android:hint="请输入用户名（2-20位字母）" />
-
-    <EditText
         android:id="@+id/phoneEditText"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         android:hint="请输入手机号（11位阿拉伯数字）"
         android:singleLine="true"
         android:imeOptions="actionDone"

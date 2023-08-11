@@ -23,7 +23,6 @@ public class ForgetActivity extends AppCompatActivity {
     private Button codeButton;
     private Button confirmButton;
     private int randomNumber;
-    private UserDao userDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -24,7 +24,6 @@ import java.util.regex.Pattern;
 
 public class EnrollActivity extends AppCompatActivity {
 
-    private EditText idEditText;
     private EditText phoneEditText;
     private EditText passwordEditText;
     private Button enrollButton;
@@ -40,7 +39,6 @@ public class EnrollActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enroll);
 
-        idEditText = findViewById(R.id.idEditText);
         phoneEditText = findViewById(R.id.phoneEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
         enrollButton = findViewById(R.id.enrollButton);
@@ -84,17 +82,14 @@ public class EnrollActivity extends AppCompatActivity {
         enrollButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String inputId = idEditText.getText().toString();
                 String inputPhone = phoneEditText.getText().toString();
                 String inputPassword = passwordEditText.getText().toString();
                 int inputCode = Integer.parseInt(codeEditText.getText().toString());
-                boolean isLetters = isLetters(inputId);
                 boolean isElevenDigits = isElevenDigits(inputPhone);
                 boolean isAlphaNumeric = isAlphaNumeric(inputPassword);
                 boolean isCode = isCode (inputCode);
-                if (isCode && isLetters && isElevenDigits && isAlphaNumeric) {
+                if (isCode && isElevenDigits && isAlphaNumeric) {
                     User user = new User();
-                    user.id = inputId;
                     user.phone = inputPhone;
                     user.password = inputPassword;
                     userDao.insert(user);
@@ -115,11 +110,6 @@ public class EnrollActivity extends AppCompatActivity {
 
     private boolean isCode(int input) {
         return randomNumber==input;
-    }
-
-    private boolean isLetters(String input) {
-        String pattern = "^[A-Za-z\\d]{2,20}$";//使用正则表达式匹配2-20位字母和数字
-        return input.matches(pattern);
     }
 
     private boolean isElevenDigits(String input) {

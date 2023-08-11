@@ -24,9 +24,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {//菜单项参数
         switch ( item.getItemId() ) {//根据菜单id做分支
+            case R.id.Change_Password:
+                Intent intent1 = new Intent(MainActivity.this, ChangePasswordActivity.class);
+                startActivity(intent1);
+                break;
             case R.id.Log_Out:
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
+                Intent intent2 = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent2);
                 break;
         }
         return super.onOptionsItemSelected(item);//此行为默认代码

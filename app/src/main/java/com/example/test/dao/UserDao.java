@@ -18,6 +18,8 @@ public interface UserDao {
     User findUser( String phone, String password ); //条件查询
     @Query("SELECT * FROM user WHERE phone = :phone")
     User findUserByPhone( String phone ); //通过手机号查询
+    @Query("SELECT * FROM user WHERE password = :password")
+    User findUserByPassword( String password ); //通过密码查询
     @Insert
     void insert(User user); //新增，由于主键自增，user不用设置uid值
     @Delete
