@@ -3,6 +3,7 @@ package com.example.test;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -17,6 +19,8 @@ public class NewActivity extends AppCompatActivity {
 
     private FloatingActionButton fab;
     private LinearLayout questionContainer;
+    private boolean flag = true;
+    private boolean sign;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +57,12 @@ public class NewActivity extends AppCompatActivity {
                 singleChoiceButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        addSingleChoice();
+                        if (flag) {
+                            sign = true;
+                            addSingleChoice();
+                        } else {
+                            Toast.makeText(NewActivity.this, "请添加选项", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
 
@@ -81,36 +90,58 @@ public class NewActivity extends AppCompatActivity {
         });
     }
 
-    private void addSingleChoice() {//中英切换太麻烦了，本方法中全部以垃圾英语注释
+    private void addSingleChoice() {//中英切换太麻烦了，以下全部以垃圾英语注释
+        flag = false;
+        final int[] cnt = {0};
         //New a LinearLayout of a section
         LinearLayout sectionLinearLayout = new LinearLayout(this);
         sectionLinearLayout.setOrientation(LinearLayout.VERTICAL);
+        sectionLinearLayout.setGravity(Gravity.CENTER);
         //New a LinearLayout of a question of a section
         LinearLayout questionLinearLayout = new LinearLayout(this);
         questionLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
         questionLinearLayout.setGravity(Gravity.CENTER);
-        // 创建一个新的EditText
-        EditText questionEditText = new EditText(this);
-        //设置EditText的提示文本
-        questionEditText.setHint("请输入该单选题题目描述");
-        //将EditText添加到LinearLayout中
-        questionLinearLayout.addView(questionEditText);
-        //创建一个新的Button
-        Button button = new Button(this);
-        // 设置按钮的文本
-        button.setText("确认");
-        //将EditText添加到LinearLayout中
-        questionLinearLayout.addView(button);
-        //Add a LinearLayout to another
-        sectionLinearLayout.addView(questionLinearLayout);
         //New an EditText of a choice
-        EditText choiceEditText = new EditText(this);
-        choiceEditText.setGravity(Gravity.CENTER);
-        choiceEditText.setHint("请输入一个选项");
-        //Add an EditText to a LinearLayout
-        sectionLinearLayout.addView(choiceEditText);
-        //将LinearLayout添加到布局中
+        EditText questionEditText = new EditText(this);
+        //Set the hint of the EditText of a choice
+        questionEditText.setHint("请输入该单选题题目描述");
+        //Add the EditText of a question to the LinearLayout of a question
+        questionLinearLayout.addView(questionEditText);
+        //New a Button for adding
+        Button addButton = new Button(this);
+        //Set the text of the Button
+        addButton.setText("增加选项");
+        //Add the Button for adding to the LinearLayout of a question
+        questionLinearLayout.addView(addButton);
+        //Add the LinearLayout of a question to the LinearLayout of a section
+        sectionLinearLayout.addView(questionLinearLayout);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //New an EditText of a choice
+                cnt[0]++;
+                if (cnt[0] <= 4 && sign) {
+                    addChoice(sectionLinearLayout);
+                } else {
+                    cnt[0] = 0;
+                    sign = false;
+                    Toast.makeText(NewActivity.this, "单选题至多添加四个选项", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        //Add the LinearLayout of a section to the Container
         questionContainer.addView(sectionLinearLayout);
+    }
+
+    private void addChoice(LinearLayout sectionLinearLayout) {
+        flag = true;
+        EditText choiceEditText = new EditText(this);
+        choiceEditText.setHint("请输入一个选项");
+        LinearLayout.LayoutParams params600W = new LinearLayout.LayoutParams(600, LinearLayout.LayoutParams.WRAP_CONTENT);
+        choiceEditText.setLayoutParams(params600W);
+        choiceEditText.setX(-200);
+        //Add the EditText of a choice to the LinearLayout of a section
+        sectionLinearLayout.addView(choiceEditText);
     }
 
     private void addMultipleChoice() {
