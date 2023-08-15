@@ -13,7 +13,7 @@
             android:layout_height="wrap_content"
             android:hint="请输入问卷标题"
             android:textColor="@color/black"
-            android:textSize="30sp"
+            android:textSize="25sp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp" />
 
@@ -27,110 +27,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="1."
-                            android:textColor="@color/black" />
-
-                        <EditText
-                            android:layout_width="250dp"
-                            android:layout_height="wrap_content"
-                            android:hint="请输入该单选题题目描述" />
-
-                        <ImageButton
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_marginTop="4dp"
-                            android:layout_marginLeft="5dp"
-                            android:src="@drawable/plus"
-                            android:scaleType="fitXY"
-                            android:background="@color/white" />
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="单击右侧按钮增加选项" />
-
-                    <EditText
-                        android:layout_width="200dp"
-                        android:layout_height="wrap_content"
-                        android:hint="请输入一个选项" />
-
-                    <LinearLayout
-                        android:id="@+id/singleChoiceContainer"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="2."
-                            android:textColor="@color/black" />
-
-                        <EditText
-                            android:layout_width="250dp"
-                            android:layout_height="wrap_content"
-                            android:hint="请输入该多选题题目描述" />
-
-                        <ImageButton
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_marginTop="4dp"
-                            android:layout_marginLeft="5dp"
-                            android:src="@drawable/plus"
-                            android:scaleType="fitXY"
-                            android:background="@color/white" />
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="单击右侧按钮增加选项" />
-
-                    <EditText
-                        android:layout_width="200dp"
-                        android:layout_height="wrap_content"
-                        android:hint="请输入一个选项" />
-
-                    <LinearLayout
-                        android:id="@+id/choicesContainer"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical" />
-
-                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/questionContainer"

@@ -9,11 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.w3c.dom.Text;
 
 public class NewActivity extends AppCompatActivity {
 
@@ -21,6 +25,7 @@ public class NewActivity extends AppCompatActivity {
     private LinearLayout questionContainer;
     private boolean flag = true;
     private boolean sign;
+    private int sequence = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,20 +68,33 @@ public class NewActivity extends AppCompatActivity {
                         } else {
                             Toast.makeText(NewActivity.this, "请添加选项", Toast.LENGTH_SHORT).show();
                         }
+                        popupWindow.dismiss();
                     }
                 });
 
                 multipleChoiceButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        addMultipleChoice();
+                        if (flag) {
+                            sign = true;
+                            addMultipleChoice();
+                        } else {
+                            Toast.makeText(NewActivity.this, "请添加选项", Toast.LENGTH_SHORT).show();
+                        }
+                        popupWindow.dismiss();
                     }
                 });
 
                 essayQuestionButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        addEssayQuestion();
+                        if (flag) {
+                            sign = true;
+                            addEssayQuestion();
+                        } else {
+                            Toast.makeText(NewActivity.this, "请添加选项", Toast.LENGTH_SHORT).show();
+                        }
+                        popupWindow.dismiss();
                     }
                 });
 
@@ -90,27 +108,51 @@ public class NewActivity extends AppCompatActivity {
         });
     }
 
-    private void addSingleChoice() {//中英切换太麻烦了，以下全部以垃圾英语注释
+    private void addSingleChoice() {
+        sequence++;
         flag = false;
         final int[] cnt = {0};
         //New a LinearLayout of a section
         LinearLayout sectionLinearLayout = new LinearLayout(this);
         sectionLinearLayout.setOrientation(LinearLayout.VERTICAL);
         sectionLinearLayout.setGravity(Gravity.CENTER);
+
+        //New a LinearLayout of a title
+        LinearLayout titleLinearLayout = new LinearLayout(this);
+        titleLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        titleLinearLayout.setGravity(Gravity.CENTER);
+        //New a TextView of the sequence of a section
+        TextView sequenceTextView = new TextView(this);
+        //Set the sequence
+        sequenceTextView.setText(sequence + ".                                                  ");
+        titleLinearLayout.addView(sequenceTextView);
+        //New a Button to delete the present section
+        Button deleteButton = new Button(this);
+        deleteButton.setText("删除问题");
+        titleLinearLayout.addView(deleteButton);
+        sectionLinearLayout.addView(titleLinearLayout);
+
         //New a LinearLayout of a question of a section
         LinearLayout questionLinearLayout = new LinearLayout(this);
-        questionLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        questionLinearLayout.setOrientation(LinearLayout.VERTICAL);
         questionLinearLayout.setGravity(Gravity.CENTER);
-        //New an EditText of a choice
+        //New an EditText of a question
         EditText questionEditText = new EditText(this);
+
+        LinearLayout.LayoutParams params1000W = new LinearLayout.LayoutParams(1000, LinearLayout.LayoutParams.WRAP_CONTENT);
+        questionEditText.setLayoutParams(params1000W);
+        questionEditText.setX(-10);
+
         //Set the hint of the EditText of a choice
         questionEditText.setHint("请输入该单选题题目描述");
         //Add the EditText of a question to the LinearLayout of a question
         questionLinearLayout.addView(questionEditText);
         //New a Button for adding
         Button addButton = new Button(this);
+        addButton.setLayoutParams(params1000W);
+        addButton.setX(-10);
         //Set the text of the Button
-        addButton.setText("增加选项");
+        addButton.setText("添加选项");
         //Add the Button for adding to the LinearLayout of a question
         questionLinearLayout.addView(addButton);
         //Add the LinearLayout of a question to the LinearLayout of a section
@@ -131,40 +173,154 @@ public class NewActivity extends AppCompatActivity {
         });
         //Add the LinearLayout of a section to the Container
         questionContainer.addView(sectionLinearLayout);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("flag","删除");
+                deleteSection(sectionLinearLayout);
+            }
+        });
+    }
+
+    private void addMultipleChoice() {
+        sequence++;
+        flag = false;
+        final int[] cnt = {0};
+        //New a LinearLayout of a section
+        LinearLayout sectionLinearLayout = new LinearLayout(this);
+        sectionLinearLayout.setOrientation(LinearLayout.VERTICAL);
+        sectionLinearLayout.setGravity(Gravity.CENTER);
+
+        //New a LinearLayout of a title
+        LinearLayout titleLinearLayout = new LinearLayout(this);
+        titleLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        titleLinearLayout.setGravity(Gravity.CENTER);
+        //New a TextView of the sequence of a section
+        TextView sequenceTextView = new TextView(this);
+        //Set the sequence
+        sequenceTextView.setText(sequence + ".                                                  ");
+        titleLinearLayout.addView(sequenceTextView);
+        //New a Button to delete the present section
+        Button deleteButton = new Button(this);
+        deleteButton.setText("删除问题");
+        titleLinearLayout.addView(deleteButton);
+        sectionLinearLayout.addView(titleLinearLayout);
+
+        //New a LinearLayout of a question of a section
+        LinearLayout questionLinearLayout = new LinearLayout(this);
+        questionLinearLayout.setOrientation(LinearLayout.VERTICAL);
+        questionLinearLayout.setGravity(Gravity.CENTER);
+        //New an EditText of a question
+        EditText questionEditText = new EditText(this);
+
+        LinearLayout.LayoutParams params1000W = new LinearLayout.LayoutParams(1000, LinearLayout.LayoutParams.WRAP_CONTENT);
+        questionEditText.setLayoutParams(params1000W);
+        questionEditText.setX(-10);
+
+        //Set the hint of the EditText of a choice
+        questionEditText.setHint("请输入该多选题题目描述");
+        //Add the EditText of a question to the LinearLayout of a question
+        questionLinearLayout.addView(questionEditText);
+        //New a Button for adding
+        Button addButton = new Button(this);
+        addButton.setLayoutParams(params1000W);
+        addButton.setX(-10);
+        //Set the text of the Button
+        addButton.setText("添加选项");
+        //Add the Button for adding to the LinearLayout of a question
+        questionLinearLayout.addView(addButton);
+        //Add the LinearLayout of a question to the LinearLayout of a section
+        sectionLinearLayout.addView(questionLinearLayout);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //New an EditText of a choice
+                cnt[0]++;
+                if (cnt[0] <= 8 && sign) {
+                    addChoice(sectionLinearLayout);
+                } else {
+                    cnt[0] = 0;
+                    sign = false;
+                    Toast.makeText(NewActivity.this, "多选题至多添加八个选项", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        //Add the LinearLayout of a section to the Container
+        questionContainer.addView(sectionLinearLayout);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("flag","删除");
+                deleteSection(sectionLinearLayout);
+            }
+        });
     }
 
     private void addChoice(LinearLayout sectionLinearLayout) {
         flag = true;
         EditText choiceEditText = new EditText(this);
         choiceEditText.setHint("请输入一个选项");
-        LinearLayout.LayoutParams params600W = new LinearLayout.LayoutParams(600, LinearLayout.LayoutParams.WRAP_CONTENT);
-        choiceEditText.setLayoutParams(params600W);
-        choiceEditText.setX(-200);
+        LinearLayout.LayoutParams params1000W = new LinearLayout.LayoutParams(1000, LinearLayout.LayoutParams.WRAP_CONTENT);
+        choiceEditText.setLayoutParams(params1000W);
+        choiceEditText.setX(-10);
         //Add the EditText of a choice to the LinearLayout of a section
         sectionLinearLayout.addView(choiceEditText);
     }
 
-    private void addMultipleChoice() {
-        // 创建一个新的按钮
-        Button button = new Button(this);
-        // 设置按钮的文本
-        button.setText("Click Me!");
-        // 设置按钮的大小
-        button.setWidth(10);
-        button.setHeight(10);
-        // 将按钮添加到布局中
-        setContentView(button);
+    private void addEssayQuestion() {
+        flag = true;
+        sequence++;
+        //New a LinearLayout of a section
+        LinearLayout sectionLinearLayout = new LinearLayout(this);
+        sectionLinearLayout.setOrientation(LinearLayout.VERTICAL);
+        sectionLinearLayout.setGravity(Gravity.CENTER);
+
+        //New a LinearLayout of a title
+        LinearLayout titleLinearLayout = new LinearLayout(this);
+        titleLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        titleLinearLayout.setGravity(Gravity.CENTER);
+        //New a TextView of the sequence of a section
+        TextView sequenceTextView = new TextView(this);
+        //Set the sequence
+        sequenceTextView.setText(sequence + ".                                                  ");
+        titleLinearLayout.addView(sequenceTextView);
+        //New a Button to delete the present section
+        Button deleteButton = new Button(this);
+        deleteButton.setText("删除问题");
+        titleLinearLayout.addView(deleteButton);
+        sectionLinearLayout.addView(titleLinearLayout);
+
+        //New a LinearLayout of a question of a section
+        LinearLayout questionLinearLayout = new LinearLayout(this);
+        questionLinearLayout.setOrientation(LinearLayout.VERTICAL);
+        questionLinearLayout.setGravity(Gravity.CENTER);
+        //New an EditText of a question
+        EditText questionEditText = new EditText(this);
+
+        LinearLayout.LayoutParams params1000W = new LinearLayout.LayoutParams(1000, LinearLayout.LayoutParams.WRAP_CONTENT);
+        questionEditText.setLayoutParams(params1000W);
+        questionEditText.setX(-10);
+
+        //Set the hint of the EditText of a choice
+        questionEditText.setHint("请输入该问答题题目描述");
+        //Add the EditText of a question to the LinearLayout of a question
+        questionLinearLayout.addView(questionEditText);
+        //Add the LinearLayout of a question to the LinearLayout of a section
+        sectionLinearLayout.addView(questionLinearLayout);
+        //Add the LinearLayout of a section to the Container
+        questionContainer.addView(sectionLinearLayout);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("flag","删除");
+                deleteSection(sectionLinearLayout);
+            }
+        });
     }
 
-    private void addEssayQuestion() {
-        // 创建一个新的按钮
-        Button button = new Button(this);
-        // 设置按钮的文本
-        button.setText("Click Me!");
-        // 设置按钮的大小
-        button.setWidth(10);
-        button.setHeight(10);
-        // 将按钮添加到布局中
-        setContentView(button);
+    private void deleteSection(LinearLayout sectionLinearLayout) {
+        sequence--;
+        flag = true;
+        questionContainer.removeViewInLayout(sectionLinearLayout);
     }
 }
