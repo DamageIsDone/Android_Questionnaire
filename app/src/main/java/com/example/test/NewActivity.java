@@ -1,7 +1,11 @@
 package com.example.test;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -23,6 +27,8 @@ public class NewActivity extends AppCompatActivity {
 
     private FloatingActionButton fab;
     private LinearLayout questionContainer;
+    private TextView returnTextView;
+    private TextView finishTextView;
     private boolean flag = true;
     private boolean sign;
     private int sequence = 0;
@@ -32,8 +38,27 @@ public class NewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new);
 
+        ActionBar actionBar = getSupportActionBar(); //获取ActionBar
+        actionBar.hide(); //隐藏ActionBar
+
         fab = findViewById(R.id.fab);
         questionContainer = findViewById(R.id.questionContainer);
+        returnTextView = findViewById(R.id.returnTextView);
+        finishTextView = findViewById(R.id.finishTextView);
+
+        returnTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tipDialog();
+            }
+        });
+
+        finishTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,6 +131,49 @@ public class NewActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    private void tipDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(NewActivity.this);
+        builder.setTitle("提示：");
+        builder.setMessage("退出将不会保存您的修改");
+
+        //设置正面按钮
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.d("flag","确认退出新建问卷");
+                finish();
+                Intent intent = new Intent(NewActivity.this, MainActivity.class);
+                startActivity(intent);
+                dialog.dismiss();
+            }
+        });
+        //设置反面按钮
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.d("flag","取消退出新建问卷");
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();      //创建AlertDialog对象
+        //对话框显示的监听事件
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                Log.d("flag", "对话框显示了");
+            }
+        });
+        //对话框消失的监听事件
+        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                Log.d("flag", "对话框消失了");
+            }
+        });
+        dialog.show();                              //显示对话框
     }
 
     private void addSingleChoice() {
