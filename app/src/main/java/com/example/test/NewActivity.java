@@ -49,14 +49,14 @@ public class NewActivity extends AppCompatActivity {
         returnTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tipDialog();
+                tipReturnDialog();
             }
         });
 
         finishTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                tipFinishDialog();
             }
         });
 
@@ -133,7 +133,7 @@ public class NewActivity extends AppCompatActivity {
         });
     }
 
-    private void tipDialog() {
+    private void tipReturnDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(NewActivity.this);
         builder.setTitle("提示：");
         builder.setMessage("退出将不会保存您的修改");
@@ -173,7 +173,37 @@ public class NewActivity extends AppCompatActivity {
                 Log.d("flag", "对话框消失了");
             }
         });
-        dialog.show();                              //显示对话框
+        dialog.show();//显示对话框
+    }
+
+    private void tipFinishDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(NewActivity.this);
+        builder.setTitle("提示：");
+        builder.setMessage("确认完成问卷编辑吗？");
+
+        //设置正面按钮
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.d("flag","确认完成新建问卷");
+                finish();
+                Intent intent = new Intent(NewActivity.this, FinishActivity.class);
+                startActivity(intent);
+                dialog.dismiss();
+            }
+        });
+
+        //设置反面按钮
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.d("flag","取消完成新建问卷");
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();      //创建AlertDialog对象
+        dialog.show();//显示对话框
     }
 
     private void addSingleChoice() {
