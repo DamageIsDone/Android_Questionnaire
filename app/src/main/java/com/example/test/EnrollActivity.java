@@ -26,6 +26,7 @@ public class EnrollActivity extends AppCompatActivity {
 
     private EditText phoneEditText;
     private EditText passwordEditText;
+    private EditText emailEditText;
     private Button enrollButton;
     private Button deleteButton;
     private AppDatabase appDatabase;
@@ -41,6 +42,7 @@ public class EnrollActivity extends AppCompatActivity {
 
         phoneEditText = findViewById(R.id.phoneEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
+        emailEditText = findViewById(R.id.emailEditText);
         enrollButton = findViewById(R.id.enrollButton);
         deleteButton = findViewById(R.id.deleteButton);
         codeEditText = findViewById(R.id.codeEditText);
@@ -84,16 +86,17 @@ public class EnrollActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String inputPhone = phoneEditText.getText().toString();
                 String inputPassword = passwordEditText.getText().toString();
+                String inputEmail = emailEditText.getText().toString();
                 int inputCode = Integer.parseInt(codeEditText.getText().toString());
                 boolean isElevenDigits = isElevenDigits(inputPhone);
                 boolean isAlphaNumeric = isAlphaNumeric(inputPassword);
                 boolean isCode = isCode (inputCode);
-                if (isCode && isElevenDigits && isAlphaNumeric) {
+                if (isCode && isElevenDigits && isAlphaNumeric && !inputEmail.isEmpty()) {
                     User user = new User();
                     user.phone = inputPhone;
                     user.password = inputPassword;
                     userDao.insert(user);
-                    Toast.makeText(EnrollActivity.this, "输入的是2-20位字母数字\n输入的是11位数字\n输入是8-20位字母加数字", Toast.LENGTH_SHORT).show();
+                    Log.d("flag","输入的是2-20位字母数字\n输入的是11位数字\n输入是8-20位字母加数字\n邮箱不为空");
                 } else {
                     Toast.makeText(EnrollActivity.this, "请检查输入", Toast.LENGTH_SHORT).show();
                 }

@@ -56,7 +56,11 @@ public class NewActivity extends AppCompatActivity {
         finishTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tipFinishDialog();
+                if (sequence != 0) {
+                    tipFinishDialog();
+                } else {
+                    Toast.makeText(NewActivity.this, "请编辑问卷后提交", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
