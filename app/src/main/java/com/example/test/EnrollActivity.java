@@ -22,9 +22,13 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
+
 public class EnrollActivity extends AppCompatActivity {
 
-    private EditText phoneEditText;
+    private EditText usernameEditText;
     private EditText passwordEditText;
     private EditText emailEditText;
     private Button enrollButton;
@@ -40,7 +44,7 @@ public class EnrollActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enroll);
 
-        phoneEditText = findViewById(R.id.phoneEditText);
+        usernameEditText = findViewById(R.id.usernameEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
         emailEditText = findViewById(R.id.emailEditText);
         enrollButton = findViewById(R.id.enrollButton);
@@ -58,12 +62,12 @@ public class EnrollActivity extends AppCompatActivity {
         codeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String inputPhone = phoneEditText.getText().toString();
-                boolean isElevenDigits = isElevenDigits(inputPhone);
-                //电话号码输入不为空时才可获得验证码
-                if(!isElevenDigits) {
-                    Toast.makeText(EnrollActivity.this, "请正确输入手机号", Toast.LENGTH_SHORT).show();
+                String inputEmail = emailEditText.getText().toString();
+                //邮箱输入不为空时才可获得验证码
+                if(inputEmail == null) {
+                    Toast.makeText(EnrollActivity.this, "请输入邮箱", Toast.LENGTH_SHORT).show();
                 } else {
+                    //以下是虚假的生成验证码操作
                     randomNumber = generateRandomNumber(); // 生成随机数
                     Log.d("flag","生成随机数"+randomNumber);
                     // 创建AlertDialog
@@ -84,19 +88,31 @@ public class EnrollActivity extends AppCompatActivity {
         enrollButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String inputPhone = phoneEditText.getText().toString();
+                String inputUsername = usernameEditText.getText().toString();
                 String inputPassword = passwordEditText.getText().toString();
                 String inputEmail = emailEditText.getText().toString();
                 int inputCode = Integer.parseInt(codeEditText.getText().toString());
-                boolean isElevenDigits = isElevenDigits(inputPhone);
                 boolean isAlphaNumeric = isAlphaNumeric(inputPassword);
                 boolean isCode = isCode (inputCode);
-                if (isCode && isElevenDigits && isAlphaNumeric && !inputEmail.isEmpty()) {
+                if (isCode && inputUsername != null && isAlphaNumeric && inputEmail != null) {
+
+//                    //尝试网络请求
+//                    // 创建OkHttpClient实例
+//                    OkHttpClient okHttpClient = new OkHttpClient();
+//                    String loginUrl = "https://"; // 替换为login地址
+//                    RequestBody requestBody = new FormBody.Builder()
+//                            .add("username", inputUsername)
+//                            .add("password", inputPassword)
+//                            .add("email",inputEmail)
+//                            .build();
+
+                    //先用Room写了
                     User user = new User();
-                    user.phone = inputPhone;
+                    user.phone = inputUsername;
                     user.password = inputPassword;
                     userDao.insert(user);
-                    Log.d("flag","输入的是2-20位字母数字\n输入的是11位数字\n输入是8-20位字母加数字\n邮箱不为空");
+                    Log.d("flag","输入正确");
+                    Toast.makeText(EnrollActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(EnrollActivity.this, "请检查输入", Toast.LENGTH_SHORT).show();
                 }
@@ -104,7 +120,7 @@ public class EnrollActivity extends AppCompatActivity {
         });
     }
 
-    // 生成六位随机数的辅助方法
+    // 生成六位随机数的方法
     private int generateRandomNumber() {
         int min = 100000;
         int max = 999999;
@@ -113,11 +129,6 @@ public class EnrollActivity extends AppCompatActivity {
 
     private boolean isCode(int input) {
         return randomNumber==input;
-    }
-
-    private boolean isElevenDigits(String input) {
-        String pattern = "^\\d{11}$"; // 使用正则表达式匹配11位数字
-        return input.matches(pattern);
     }
 
     private boolean isAlphaNumeric(String input) {

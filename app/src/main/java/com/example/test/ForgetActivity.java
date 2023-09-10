@@ -18,7 +18,7 @@ import java.util.Random;
 
 public class ForgetActivity extends AppCompatActivity {
 
-    private EditText phoneEditText;
+    private EditText usernameEditText;
     private EditText codeEditText;
     private Button codeButton;
     private Button confirmButton;
@@ -29,7 +29,7 @@ public class ForgetActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forget);
 
-        phoneEditText = findViewById(R.id.phoneEditText);
+        usernameEditText = findViewById(R.id.usernameEditText);
         codeEditText = findViewById(R.id.codeEditText);
         codeButton = findViewById(R.id.codeButton);
         confirmButton = findViewById(R.id.confirmButton);
@@ -37,10 +37,9 @@ public class ForgetActivity extends AppCompatActivity {
         codeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String inputPhone = phoneEditText.getText().toString();
-                boolean isElevenDigits = isElevenDigits(inputPhone);
-                //电话号码输入不为空时才可获得验证码
-                if(!isElevenDigits) {
+                String inputUsername = usernameEditText.getText().toString();
+                //用户名输入不为空时才可获得验证码
+                if(inputUsername != null) {
                     Toast.makeText(ForgetActivity.this, "请正确输入手机号", Toast.LENGTH_SHORT).show();
                 } else {
                     randomNumber = generateRandomNumber(); // 生成随机数
@@ -58,17 +57,16 @@ public class ForgetActivity extends AppCompatActivity {
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String inputPhone = phoneEditText.getText().toString();
+                String inputUsername = usernameEditText.getText().toString();
                 int inputCode = Integer.parseInt(codeEditText.getText().toString());
-                boolean isElevenDigits = isElevenDigits (inputPhone);
                 boolean isCode = isCode (inputCode);
-                Log.d("flag","isElevenDigits是" + isElevenDigits + " isCode是" + isCode);
-                if (isCode && isElevenDigits) {
+                Log.d("flag","isCode是" + isCode);
+                if (isCode) {
                     Log.d("flag","验证码正确");
                     AppDatabase db = Room.databaseBuilder( getApplicationContext(), AppDatabase.class, "user_database")
                             .allowMainThreadQueries().build();
                     UserDao userDao = db.userDao();
-                    String password = userDao.findUserByPhone(inputPhone).password;
+                    String password = userDao.findUserByPhone(inputUsername).password;
                     Log.d("flag","密码是" + password);
                     // 创建AlertDialog
                     AlertDialog alertDialog = new AlertDialog.Builder(ForgetActivity.this)
